@@ -1,0 +1,26 @@
+{
+    "name": "orchidcommunity/tinymce",
+    "description": "TinyMCE editor for Laravel Orchid",
+    "type": "library",
+    "require": {
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "tabuna",
+            "email": "bliz48rus@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Tabuna\\TinyMCE\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "OrchidCommunity\\TinyMCE\\TinyMCEServiceProvider"
+            ]
+        }
+    }
+}
