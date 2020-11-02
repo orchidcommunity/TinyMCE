@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tabuna\TinyMCE;
+namespace OrchidCommunity\TinyMCE;
 
 use Orchid\Screen\Field;
 use Orchid\Support\Facades\Dashboard;
@@ -90,10 +90,10 @@ class TinyMCE extends Field
      *
      * @return self
      */
-    public static function make(string $name = null): self
+    public static function make(string $name = null):Field
     {
-        \Orchid\Support\Facades\Dashboard::registerResource('scripts', 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.6/tinymce.min.js');
-        \Orchid\Support\Facades\Dashboard::registerResource('scripts', route('platform.resource', ['tinymce','tinymce_controller.js']));
+        Dashboard::registerResource('scripts', 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.6/tinymce.min.js');
+        Dashboard::registerResource('scripts', route('platform.resource', ['tinymce','tinymce.js']));
 
         return (new static())->name($name);
     }

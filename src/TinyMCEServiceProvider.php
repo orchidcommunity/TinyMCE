@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tabuna\TinyMCE;
+namespace OrchidCommunity\TinyMCE;
 
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +22,6 @@ class TinyMCEServiceProvider extends RouteServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/../views', 'tinymce');
 
-        \Orchid\Support\Facades\Dashboard::addPublicDirectory('tinymce', __DIR__ . '/../resource');
+        \Orchid\Support\Facades\Dashboard::addPublicDirectory('tinymce', __DIR__ . '/../public');
     }
 }
