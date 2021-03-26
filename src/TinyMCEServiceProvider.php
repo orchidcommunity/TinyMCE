@@ -23,5 +23,7 @@ class TinyMCEServiceProvider extends RouteServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../views', 'tinymce');
 
         \Orchid\Support\Facades\Dashboard::addPublicDirectory('tinymce', __DIR__ . '/../public');
+
+        parent::boot();
     }
 }
