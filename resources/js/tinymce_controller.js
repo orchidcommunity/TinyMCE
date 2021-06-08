@@ -3,7 +3,13 @@ application.register("tinymce", class extends window.Controller {
      *
      */
     connect() {
-        tinymce.baseURL = platform.prefix('/resources/tinymce/tinymce');
+        let platformController = window.platform;
+
+        if (typeof platformController === "undefined") {
+            platformController = this;
+        }
+
+        tinymce.baseURL = platformController.prefix('/resources/tinymce/tinymce');
 
         const selector = this.element.querySelector('.tinymce').id;
         const input = this.element.querySelector('input');
@@ -65,13 +71,19 @@ application.register("tinymce", class extends window.Controller {
         const data = new FormData();
         data.append('file', blobInfo.blob());
 
+        let platformController = window.platform;
+
+        if (typeof platformController === 'undefined') {
+            platformController = this;
+        }
+
         axios
-            .post(platform.prefix('/systems/files'), data)
+            .post(platformController.prefix('/systems/files'), data)
             .then((response) => {
                 success(response.data.url);
             })
             .catch((error) => {
-                window.platform.alert('Validation error', 'File upload error');
+                platformController.alert('Validation error', 'File upload error');
                 console.warn(error);
             });
     }
