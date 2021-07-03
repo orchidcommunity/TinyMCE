@@ -92,6 +92,7 @@ class TinyMCE extends Field
     public static function make(string $name = null):Field
     {
 //        Dashboard::registerResource('scripts', 'https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js');
+        Dashboard::registerResource('scripts', route('platform.resource', ['tinymce/tinymce', 'tinymce.min.js']));
         Dashboard::registerResource('scripts', route('platform.resource', ['tinymce','tinymce.js']));
 
         return (new static())->name($name);
