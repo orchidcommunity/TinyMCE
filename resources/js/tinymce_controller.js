@@ -3,6 +3,7 @@ application.register("tinymce", class extends window.Controller {
      *
      */
     connect() {
+        console.log('TinyMCE connected')
         let platformController = window.platform;
 
         if (typeof platformController === "undefined") {
