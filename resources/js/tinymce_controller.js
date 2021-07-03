@@ -28,6 +28,7 @@ application.register("tinymce", class extends window.Controller {
             min_height: 300,
             height: 300,
             max_height: 600,
+            language: 'ru',
             plugins,
             toolbar1,
             insert_toolbar: 'quickimage quicktable media codesample fullscreen',
