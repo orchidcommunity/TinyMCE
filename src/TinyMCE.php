@@ -26,7 +26,6 @@ use Orchid\Support\Facades\Dashboard;
  * @method TinyMCE required(bool $value = true)
  * @method TinyMCE tabindex($value = true)
  * @method TinyMCE value($value = true)
- * @method TinyMCE theme(string $theme = null)
  * @method TinyMCE help(string $value = null)
  * @method TinyMCE popover(string $value = null)
  * @method TinyMCE height($value = '300px')
@@ -92,7 +91,7 @@ class TinyMCE extends Field
      */
     public static function make(string $name = null):Field
     {
-        Dashboard::registerResource('scripts', 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.6/tinymce.min.js');
+        Dashboard::registerResource('scripts', 'https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js');
         Dashboard::registerResource('scripts', route('platform.resource', ['tinymce','tinymce.js']));
 
         return (new static())->name($name);
