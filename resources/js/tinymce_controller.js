@@ -27,7 +27,7 @@ application.register("tinymce", class extends window.Controller {
         // for remove cache
         tinymce.remove(`#${selector}`);
 
-        tinymce.init({
+        let config = {
             branding: false,
             selector: `#${selector}`,
             theme: this.element.dataset.theme,
@@ -59,7 +59,18 @@ application.register("tinymce", class extends window.Controller {
                 });
             },
             images_upload_handler: this.upload,
-        });
+        };
+
+        let configExt;
+        if (this.element.dataset.configExt) {
+            configExt = JSON.parse(this.element.dataset.configExt);
+        }
+
+        if ((configExt instanceof Object) && !(configExt instanceof Array)) {
+            config = Object.assign(config, configExt);
+        }
+
+        tinymce.init(config);
     }
 
     /**

@@ -31,6 +31,7 @@ use Orchid\Support\Facades\Dashboard;
  * @method TinyMCE popover(string $value = null)
  * @method TinyMCE height($value = '300px')
  * @method TinyMCE title(string $value = null)
+ * @method TinyMCE configExt($value = null)
  */
 class TinyMCE extends Field
 {
@@ -86,13 +87,25 @@ class TinyMCE extends Field
     ];
 
     /**
+     * Input constructor.
+     */
+    public function __construct()
+    {
+        $this->addBeforeRender(function () {
+            $configExt = $this->get('configExt');
+
+            $this->set('configExt', is_array($configExt) ? json_encode($configExt) : '');
+        });
+    }
+
+    /**
      * @param string|null $name
      *
      * @return self
      */
     public static function make(string $name = null):Field
     {
-        Dashboard::registerResource('scripts', 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.6/tinymce.min.js');
+        Dashboard::registerResource('scripts', 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.11/tinymce.min.js');
         Dashboard::registerResource('scripts', route('platform.resource', ['tinymce','tinymce.js']));
 
         return (new static())->name($name);
