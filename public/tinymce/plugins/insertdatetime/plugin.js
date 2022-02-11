@@ -1,26 +1,15 @@
+/**
+ * Copyright (c) Tiny Technologies, Inc. All rights reserved.
+ * Licensed under the LGPL or a commercial license.
+ * For LGPL see License.txt in the project root for license information.
+ * For commercial licenses see https://www.tiny.cloud/
+ *
+ * Version: 5.10.3 (2022-02-09)
+ */
 (function () {
-var insertdatetime = (function () {
     'use strict';
 
-    var Cell = function (initial) {
-      var value = initial;
-      var get = function () {
-        return value;
-      };
-      var set = function (v) {
-        value = v;
-      };
-      var clone = function () {
-        return Cell(get());
-      };
-      return {
-        get: get,
-        set: set,
-        clone: clone
-      };
-    };
-
-    var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$1 = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
     var getDateFormat = function (editor) {
       return editor.getParam('insertdatetime_dateformat', editor.translate('%Y-%m-%d'));
@@ -43,13 +32,6 @@ var insertdatetime = (function () {
     var shouldInsertTimeElement = function (editor) {
       return editor.getParam('insertdatetime_element', false);
     };
-    var Settings = {
-      getDateFormat: getDateFormat,
-      getTimeFormat: getTimeFormat,
-      getFormats: getFormats,
-      getDefaultDateTime: getDefaultDateTime,
-      shouldInsertTimeElement: shouldInsertTimeElement
-    };
 
     var daysShort = 'Sun Mon Tue Wed Thu Fri Sat Sun'.split(' ');
     var daysLong = 'Sunday Monday Tuesday Wednesday Thursday Friday Saturday Sunday'.split(' ');
@@ -65,7 +47,9 @@ var insertdatetime = (function () {
       return value;
     };
     var getDateTime = function (editor, fmt, date) {
-      date = date || new Date();
+      if (date === void 0) {
+        date = new Date();
+      }
       fmt = fmt.replace('%D', '%m/%d/%Y');
       fmt = fmt.replace('%r', '%I:%M:%S %p');
       fmt = fmt.replace('%Y', '' + date.getFullYear());
@@ -92,7 +76,7 @@ var insertdatetime = (function () {
       editor.selection.collapse(false);
     };
     var insertDateTime = function (editor, format) {
-      if (Settings.shouldInsertTimeElement(editor)) {
+      if (shouldInsertTimeElement(editor)) {
         var userTime = getDateTime(editor, format);
         var computerTime = void 0;
         if (/%[HMSIp]/.test(format)) {
@@ -110,64 +94,89 @@ var insertdatetime = (function () {
         editor.insertContent(getDateTime(editor, format));
       }
     };
-    var Actions = {
-      insertDateTime: insertDateTime,
-      getDateTime: getDateTime
+
+    var register$1 = function (editor) {
+      editor.addCommand('mceInsertDate', function (_ui, value) {
+        insertDateTime(editor, value !== null && value !== void 0 ? value : getDateFormat(editor));
+      });
+      editor.addCommand('mceInsertTime', function (_ui, value) {
+        insertDateTime(editor, value !== null && value !== void 0 ? value : getTimeFormat(editor));
+      });
     };
+
+    var Cell = function (initial) {
+      var value = initial;
+      var get = function () {
+        return value;
+      };
+      var set = function (v) {
+        value = v;
+      };
+      return {
+        get: get,
+        set: set
+      };
+    };
+
+    var global = tinymce.util.Tools.resolve('tinymce.util.Tools');
 
     var register = function (editor) {
-      editor.addCommand('mceInsertDate', function () {
-        Actions.insertDateTime(editor, Settings.getDateFormat(editor));
-      });
-      editor.addCommand('mceInsertTime', function () {
-        Actions.insertDateTime(editor, Settings.getTimeFormat(editor));
-      });
-    };
-    var Commands = { register: register };
-
-    var global$1 = tinymce.util.Tools.resolve('tinymce.util.Tools');
-
-    var createMenuItems = function (editor, lastFormatState) {
-      var formats = Settings.getFormats(editor);
-      return global$1.map(formats, function (fmt) {
-        return {
-          text: Actions.getDateTime(editor, fmt),
-          onclick: function () {
-            lastFormatState.set(fmt);
-            Actions.insertDateTime(editor, fmt);
-          }
-        };
-      });
-    };
-    var register$1 = function (editor, lastFormatState) {
-      var menuItems = createMenuItems(editor, lastFormatState);
-      editor.addButton('insertdatetime', {
-        type: 'splitbutton',
-        title: 'Insert date/time',
-        menu: menuItems,
-        onclick: function () {
-          var lastFormat = lastFormatState.get();
-          Actions.insertDateTime(editor, lastFormat ? lastFormat : Settings.getDefaultDateTime(editor));
+      var formats = getFormats(editor);
+      var defaultFormat = Cell(getDefaultDateTime(editor));
+      var insertDateTime = function (format) {
+        return editor.execCommand('mceInsertDate', false, format);
+      };
+      editor.ui.registry.addSplitButton('insertdatetime', {
+        icon: 'insert-time',
+        tooltip: 'Insert date/time',
+        select: function (value) {
+          return value === defaultFormat.get();
+        },
+        fetch: function (done) {
+          done(global.map(formats, function (format) {
+            return {
+              type: 'choiceitem',
+              text: getDateTime(editor, format),
+              value: format
+            };
+          }));
+        },
+        onAction: function (_api) {
+          insertDateTime(defaultFormat.get());
+        },
+        onItemAction: function (_api, value) {
+          defaultFormat.set(value);
+          insertDateTime(value);
         }
       });
-      editor.addMenuItem('insertdatetime', {
-        icon: 'date',
+      var makeMenuItemHandler = function (format) {
+        return function () {
+          defaultFormat.set(format);
+          insertDateTime(format);
+        };
+      };
+      editor.ui.registry.addNestedMenuItem('insertdatetime', {
+        icon: 'insert-time',
         text: 'Date/time',
-        menu: menuItems,
-        context: 'insert'
+        getSubmenuItems: function () {
+          return global.map(formats, function (format) {
+            return {
+              type: 'menuitem',
+              text: getDateTime(editor, format),
+              onAction: makeMenuItemHandler(format)
+            };
+          });
+        }
       });
     };
-    var Buttons = { register: register$1 };
 
-    global.add('insertdatetime', function (editor) {
-      var lastFormatState = Cell(null);
-      Commands.register(editor);
-      Buttons.register(editor, lastFormatState);
-    });
     function Plugin () {
+      global$1.add('insertdatetime', function (editor) {
+        register$1(editor);
+        register(editor);
+      });
     }
 
-    return Plugin;
+    Plugin();
 
 }());
-})();

@@ -1,13 +1,20 @@
+/**
+ * Copyright (c) Tiny Technologies, Inc. All rights reserved.
+ * Licensed under the LGPL or a commercial license.
+ * For LGPL see License.txt in the project root for license information.
+ * For commercial licenses see https://www.tiny.cloud/
+ *
+ * Version: 5.10.3 (2022-02-09)
+ */
 (function () {
-var bbcode = (function () {
     'use strict';
 
-    var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$1 = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.util.Tools');
+    var global = tinymce.util.Tools.resolve('tinymce.util.Tools');
 
     var html2bbcode = function (s) {
-      s = global$1.trim(s);
+      s = global.trim(s);
       var rep = function (re, str) {
         s = s.replace(re, str);
       };
@@ -51,7 +58,7 @@ var bbcode = (function () {
       return s;
     };
     var bbcode2html = function (s) {
-      s = global$1.trim(s);
+      s = global.trim(s);
       var rep = function (re, str) {
         s = s.replace(re, str);
       };
@@ -70,32 +77,23 @@ var bbcode = (function () {
       rep(/\[quote.*?\](.*?)\[\/quote\]/gi, '<span class="quoteStyle">$1</span>&nbsp;');
       return s;
     };
-    var Convert = {
-      html2bbcode: html2bbcode,
-      bbcode2html: bbcode2html
-    };
 
-    global.add('bbcode', function () {
-      return {
-        init: function (editor) {
-          editor.on('beforeSetContent', function (e) {
-            e.content = Convert.bbcode2html(e.content);
-          });
-          editor.on('postProcess', function (e) {
-            if (e.set) {
-              e.content = Convert.bbcode2html(e.content);
-            }
-            if (e.get) {
-              e.content = Convert.html2bbcode(e.content);
-            }
-          });
-        }
-      };
-    });
     function Plugin () {
+      global$1.add('bbcode', function (editor) {
+        editor.on('BeforeSetContent', function (e) {
+          e.content = bbcode2html(e.content);
+        });
+        editor.on('PostProcess', function (e) {
+          if (e.set) {
+            e.content = bbcode2html(e.content);
+          }
+          if (e.get) {
+            e.content = html2bbcode(e.content);
+          }
+        });
+      });
     }
 
-    return Plugin;
+    Plugin();
 
 }());
-})();

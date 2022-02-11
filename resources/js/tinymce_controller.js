@@ -3,26 +3,13 @@ application.register("tinymce", class extends window.Controller {
      *
      */
     connect() {
-        let platformController = window.platform;
-
-        if (typeof platformController === "undefined") {
-            platformController = this;
-        }
-
-        tinymce.baseURL = platformController.prefix('/resources/tinymce/tinymce');
-
         const selector = this.element.querySelector('.tinymce').id;
         const input = this.element.querySelector('input');
+        tinymce.baseURL = this.prefix('/resources/tinymce/tinymce');
 
-        let plugins = 'image media table link paste contextmenu textpattern autolink codesample';
-        let toolbar1 = '';
-        let inline = true;
-
-        if (this.element.dataset.theme === 'modern') {
-            plugins = 'print autosave autoresize preview paste code searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount imagetools contextmenu colorpicker textpattern';
-            toolbar1 = 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent | removeformat | ltr rtl';
-            inline = false;
-        }
+        let plugins = 'print autosave autoresize preview paste code searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount imagetools contextmenu colorpicker textpattern';
+        let toolbar1 = 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent | removeformat | ltr rtl';
+        let inline = false;
 
         // for remove cache
         tinymce.remove(`#${selector}`);
@@ -31,6 +18,7 @@ application.register("tinymce", class extends window.Controller {
             branding: false,
             selector: `#${selector}`,
             theme: this.element.dataset.theme,
+            language: this.element.dataset.language,
             min_height: 300,
             height: 300,
             max_height: 600,
@@ -82,19 +70,20 @@ application.register("tinymce", class extends window.Controller {
         const data = new FormData();
         data.append('file', blobInfo.blob());
 
-        let platformController = window.platform;
-
-        if (typeof platformController === 'undefined') {
-            platformController = this;
-        }
+        let prefix = function (path) {
+            let prefix = document.head.querySelector('meta[name="dashboard-prefix"]');
+            // Remove double slashes from url
+            let pathname = `${prefix.content}${path}`.replace(/\/\/+/g, '/')
+            return `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ''}${pathname}`;
+        };
 
         axios
-            .post(platformController.prefix('/systems/files'), data)
+            .post(prefix('/systems/files'), data)
             .then((response) => {
                 success(response.data.url);
             })
             .catch((error) => {
-                platformController.alert('Validation error', 'File upload error');
+                alert('Validation error : File upload error');
                 console.warn(error);
             });
     }

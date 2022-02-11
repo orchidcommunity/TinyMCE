@@ -32,6 +32,7 @@ use Orchid\Support\Facades\Dashboard;
  * @method TinyMCE height($value = '300px')
  * @method TinyMCE title(string $value = null)
  * @method TinyMCE configExt($value = null)
+ * @method TinyMCE language(string $language = null)
  */
 class TinyMCE extends Field
 {
@@ -105,9 +106,13 @@ class TinyMCE extends Field
      */
     public static function make(string $name = null):Field
     {
-        Dashboard::registerResource('scripts', 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.11/tinymce.min.js');
+        Dashboard::registerResource('scripts', route('platform.resource', ['tinymce/tinymce', 'tinymce.min.js']));
         Dashboard::registerResource('scripts', route('platform.resource', ['tinymce','tinymce.js']));
 
-        return (new static())->name($name);
+        $editor = new static();
+        $editor->language($editor->get('language') ?? app()->getLocale());
+        $editor->name($name);
+        
+        return $editor;
     }
 }
