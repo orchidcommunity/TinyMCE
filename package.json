@@ -18,7 +18,7 @@
     "laravel-mix": "^4.0.14",
     "prettier": "^1.14.0",
     "stimulus": "^1.1.1",
-    "tinymce": "^4.9.11",
+    "tinymce": "^5.10.3",
     "vue-template-compiler": "^2.6.12"
   }
 }
