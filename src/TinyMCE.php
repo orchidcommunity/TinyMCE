@@ -106,9 +106,6 @@ class TinyMCE extends Field
      */
     public static function make(string $name = null):Field
     {
-        Dashboard::registerResource('scripts', route('platform.resource', ['tinymce/tinymce', 'tinymce.min.js']));
-        Dashboard::registerResource('scripts', route('platform.resource', ['tinymce','tinymce.js']));
-
         $editor = new static();
         $editor->language($editor->get('language') ?? app()->getLocale());
         $editor->name($name);
