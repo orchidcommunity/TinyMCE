@@ -12,7 +12,7 @@ use Orchid\Platform\Providers\EventServiceProvider;
 use Orchid\Platform\Providers\FoundationServiceProvider;
 use Orchid\Platform\Providers\PlatformServiceProvider;
 
-class TinyMCEServiceProvider extends RouteServiceProvider
+class TinyMCEServiceProvider extends ServiceProvider
 {
 
     /**
