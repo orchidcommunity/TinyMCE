@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace OrchidCommunity\TinyMCE;
 
-use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Orchid\Platform\Dashboard;
