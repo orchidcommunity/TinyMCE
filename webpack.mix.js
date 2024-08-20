@@ -3,12 +3,13 @@ let mix = require('laravel-mix');
 
 
 mix
-    //.sass('resources/sass/app.scss', 'css/app.css', {
-    //    implementation: require('node-sass')
-    //})
+    .copyDirectory('./node_modules/tinymce/icons', 'public/tinymce/icons')
+    .copyDirectory('./node_modules/tinymce/models', 'public/tinymce/models')
     .copyDirectory('./node_modules/tinymce/plugins', 'public/tinymce/plugins')
-    .copyDirectory('./node_modules/tinymce/themes', 'public/tinymce/themes')
     .copyDirectory('./node_modules/tinymce/skins', 'public/tinymce/skins')
+    .copyDirectory('./node_modules/tinymce/themes', 'public/tinymce/themes')
+    .copyDirectory('resources/js/langs', 'public/tinymce/langs')
+    .copy('./node_modules/tinymce/tinymce.min.js', 'public/tinymce/tinymce.min.js')
     .options({
         processCssUrls: false
     })

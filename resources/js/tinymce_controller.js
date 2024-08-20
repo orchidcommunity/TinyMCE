@@ -5,9 +5,9 @@ application.register("tinymce", class extends window.Controller {
     connect() {
         const selector = this.element.querySelector('.tinymce').id;
         const input = this.element.querySelector('input');
-        tinymce.baseURL = this.prefix('/resources/tinymce/tinymce');
+        tinymce.baseURL = this.prefix('/../js/platform/tinymce/tinymce');
 
-        let plugins = 'print autosave autoresize preview paste code searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount imagetools contextmenu colorpicker textpattern';
+        let plugins = 'autosave autoresize preview code searchreplace autolink directionality visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount';
         let toolbar1 = 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent | removeformat | ltr rtl';
         let inline = false;
 
@@ -16,6 +16,7 @@ application.register("tinymce", class extends window.Controller {
 
         let config = {
             branding: false,
+            license_key: 'gpl',
             selector: `#${selector}`,
             theme: this.element.dataset.theme,
             language: this.element.dataset.language,
@@ -26,8 +27,7 @@ application.register("tinymce", class extends window.Controller {
             toolbar1,
             insert_toolbar: 'quickimage quicktable media codesample fullscreen',
             selection_toolbar:
-                'bold italic | quicklink h2 h3 blockquote | alignleft aligncenter alignright alignjustify | outdent indent | removeformat ',
-            inline,
+                'bold italic | quicklink h2 h3 blockquote | alignleft aligncenter alignright alignjustify | outdent indent | removeformat ', inline,
             convert_urls: false,
             image_caption: true,
             image_title: true,
