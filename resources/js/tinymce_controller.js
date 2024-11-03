@@ -46,7 +46,27 @@ application.register("tinymce", class extends window.Controller {
                     $(input).val(element.getContent());
                 });
             },
-            images_upload_handler: this.upload,
+            images_upload_handler: (blobInfo) => new Promise((resolve, reject) => {
+                const data = new FormData();
+                data.append('file', blobInfo.blob());
+
+                let prefix = function (path) {
+                    let prefix = document.head.querySelector('meta[name="dashboard-prefix"]');
+                    // Remove double slashes from url
+                    let pathname = `${prefix.content}${path}`.replace(/\/\/+/g, '/')
+                    return `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ''}${pathname}`;
+                };
+
+                axios
+                    .post(prefix('/systems/files'), data)
+                    .then((response) => {
+                        resolve(response.data.url);
+                    })
+                    .catch((error) => {
+                        console.warn(error);
+                        reject('Validation error : File upload error');
+                    });
+            })
         };
 
         let configExt;
@@ -59,33 +79,6 @@ application.register("tinymce", class extends window.Controller {
         }
 
         tinymce.init(config);
-    }
-
-    /**
-     *
-     * @param blobInfo
-     * @param success
-     */
-    upload(blobInfo, success) {
-        const data = new FormData();
-        data.append('file', blobInfo.blob());
-
-        let prefix = function (path) {
-            let prefix = document.head.querySelector('meta[name="dashboard-prefix"]');
-            // Remove double slashes from url
-            let pathname = `${prefix.content}${path}`.replace(/\/\/+/g, '/')
-            return `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ''}${pathname}`;
-        };
-
-        axios
-            .post(prefix('/systems/files'), data)
-            .then((response) => {
-                success(response.data.url);
-            })
-            .catch((error) => {
-                alert('Validation error : File upload error');
-                console.warn(error);
-            });
     }
 
     disconnect() {
