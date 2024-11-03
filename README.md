@@ -1,7 +1,26 @@
 # TinyMCE
-TinyMCE editor for Laravel Orchid
+TinyMCE 7 editor for Laravel Orchid
 
+Add to composer.json
+
+```
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "git@github.com:orchidcommunity/TinyMCE.git"
+    }
+]
+```
+
+Run the following commands from your terminal:
+
+```bash
+composer require orchidcommunity/TinyMCE
+```
+
+```bash
 php artisan vendor:publish --tag=laravel-assets --ansi --force
+```
 
 than add to config/platform.php 
 
