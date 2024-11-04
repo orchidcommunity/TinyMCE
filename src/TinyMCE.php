@@ -29,7 +29,6 @@ use Orchid\Support\Facades\Dashboard;
  * @method TinyMCE theme(string $theme = null)
  * @method TinyMCE help(string $value = null)
  * @method TinyMCE popover(string $value = null)
- * @method TinyMCE height($value = '300px')
  * @method TinyMCE title(string $value = null)
  * @method TinyMCE configExt($value = null)
  * @method TinyMCE language(string $language = null)
@@ -49,6 +48,7 @@ class TinyMCE extends Field
     protected $attributes = [
         'value'  => null,
         'height' => '300px',
+        'data-tinymce-license' => 'gpl',
     ];
 
     /**
@@ -85,6 +85,7 @@ class TinyMCE extends Field
         'type',
         'value',
         'height',
+        'data-tinymce-license',
     ];
 
     /**
@@ -100,6 +101,33 @@ class TinyMCE extends Field
     }
 
     /**
+     * Set editor height
+     *
+     * @param string $height
+     * @return $this
+     */
+    public function height(string $height): self
+    {
+        $this->set('height', $height);
+
+        return $this;
+    }
+
+    /**
+     * Set license key
+     * https://www.tiny.cloud/docs/tinymce/latest/license-key/
+     *
+     * @param string $license
+     * @return $this
+     */
+    public function license(string $license): self
+    {
+        $this->set('data-tinymce-license', $license);
+
+        return $this;
+    }
+
+    /**
      * @param string|null $name
      *
      * @return self
@@ -109,7 +137,7 @@ class TinyMCE extends Field
         $editor = new static();
         $editor->language($editor->get('language') ?? app()->getLocale());
         $editor->name($name);
-        
+
         return $editor;
     }
 }
