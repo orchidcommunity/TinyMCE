@@ -29,10 +29,11 @@ use Orchid\Support\Facades\Dashboard;
  * @method TinyMCE theme(string $theme = null)
  * @method TinyMCE help(string $value = null)
  * @method TinyMCE popover(string $value = null)
- * @method TinyMCE height($value = '300px')
+ * @method TinyMCE height(int $value = 300)
  * @method TinyMCE title(string $value = null)
  * @method TinyMCE configExt($value = null)
  * @method TinyMCE language(string $language = null)
+ * @method TinyMCE license(string $license = 'gpl')
  */
 class TinyMCE extends Field
 {
@@ -48,7 +49,8 @@ class TinyMCE extends Field
      */
     protected $attributes = [
         'value'  => null,
-        'height' => '300px',
+        'height' => 300,
+        'license' => 'gpl',
     ];
 
     /**
@@ -85,6 +87,7 @@ class TinyMCE extends Field
         'type',
         'value',
         'height',
+        'license',
     ];
 
     /**

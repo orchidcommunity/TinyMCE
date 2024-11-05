@@ -1,6 +1,8 @@
 # TinyMCE
 TinyMCE 7 editor for Laravel Orchid
 
+## Installation
+
 Add to composer.json
 
 ```
@@ -35,3 +37,23 @@ than add to config/platform.php
     ],
 ],
 ```
+
+## Usage
+
+```
+TinyMCE::make('name')
+        ->title('Title')
+        // Editor minimal height with autoresize plug-in, including toolbars
+        // Default (int) 300 
+        ->height(500)
+        // License key, default 'gpl'
+        ->license('gpl'),
+```
+
+## About TinyMCE license
+
+TinyMCE 7 is licensed under the GNU General Public License Version 2 or later. A new configuration option called
+'license_key' requires developers to make a conscious decision to use TinyMCE with the GPLv2+ license or with a
+commercial license.
+
+More info here https://www.tiny.cloud/docs/tinymce/latest/license-key/

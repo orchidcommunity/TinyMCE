@@ -16,12 +16,14 @@ application.register("tinymce", class extends window.Controller {
 
         let config = {
             branding: false,
-            license_key: 'gpl',
+            license_key: this.element.dataset.license,
             selector: `#${selector}`,
             theme: this.element.dataset.theme,
             language: this.element.dataset.language,
-            min_height: 300,
-            height: 300,
+            // With autoresize plug-in
+            min_height: Number(this.element.dataset.height),
+            // Without autoresize plug-in
+            //height: 500,
             max_height: 600,
             plugins,
             toolbar1,
