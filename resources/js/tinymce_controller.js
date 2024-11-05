@@ -7,7 +7,7 @@ application.register("tinymce", class extends window.Controller {
         const input = this.element.querySelector('input');
         tinymce.baseURL = this.prefix('/../js/platform/tinymce/tinymce');
 
-        let plugins = 'autosave preview code searchreplace autolink directionality visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount';
+        let plugins = 'autosave autoresize preview code searchreplace autolink directionality visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount';
         let toolbar1 = 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent | removeformat | ltr rtl';
         let inline = false;
 
@@ -16,11 +16,14 @@ application.register("tinymce", class extends window.Controller {
 
         let config = {
             branding: false,
-            license_key: this.element.getAttribute('data-tinymce-license'),
+            license_key: this.element.dataset.license,
             selector: `#${selector}`,
             theme: this.element.dataset.theme,
             language: this.element.dataset.language,
-            min_height: 300,
+            // With autoresize plug-in
+            min_height: Number(this.element.dataset.height),
+            // Without autoresize plug-in
+            //height: 500,
             max_height: 600,
             plugins,
             toolbar1,
