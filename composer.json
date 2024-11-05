@@ -2,7 +2,7 @@
     "name": "orchidcommunity/tinymce",
     "description": "TinyMCE editor for Laravel Orchid",
     "type": "library",
-    "version": "2.1.0",
+    "version": "2.0.1",
     "require": {
     },
     "license": "GPL-2.0-or-later",
