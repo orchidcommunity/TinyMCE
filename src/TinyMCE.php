@@ -107,12 +107,12 @@ class TinyMCE extends Field
      *
      * @return self
      */
-    public static function make(string $name = null):Field
+    public static function make(string $name = null): static
     {
         $editor = new static();
         $editor->language($editor->get('language') ?? app()->getLocale());
         $editor->name($name);
-        
+
         return $editor;
     }
 }
