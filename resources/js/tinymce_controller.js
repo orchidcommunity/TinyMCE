@@ -45,7 +45,7 @@ application.register("tinymce", class extends window.Controller {
             ],
             setup: (element) => {
                 element.on('change', () => {
-                    $(input).val(element.getContent());
+                    input.value = element.getContent();
                 });
             },
             images_upload_handler: (blobInfo) => new Promise((resolve, reject) => {
